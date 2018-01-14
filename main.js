@@ -60,28 +60,11 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _mediaDevice = __webpack_require__(1);
-
-var _mediaDevice2 = _interopRequireDefault(_mediaDevice);
-
-var _ButtonCameraPermission = __webpack_require__(2);
-
-var _ButtonCameraPermission2 = _interopRequireDefault(_ButtonCameraPermission);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/***/ }),
-/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -117,42 +100,7 @@ function startingCamera(video) {
 }
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _Component = __webpack_require__(3);
-
-var _Component2 = _interopRequireDefault(_Component);
-
-var _CameraScreen = __webpack_require__(5);
-
-var _CameraScreen2 = _interopRequireDefault(_CameraScreen);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var ButtonCameraPermission = new _Component2.default('ButtonCameraPermission', {
-  permitted: false
-});
-
-ButtonCameraPermission.on('click', function (evt) {
-  _CameraScreen2.default.setState({ show: true });
-});
-
-ButtonCameraPermission.render(function (state) {
-  console.log(state.permitted);
-});
-
-exports.default = ButtonCameraPermission;
-
-/***/ }),
-/* 3 */
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -233,8 +181,24 @@ var Component = function () {
 exports.default = Component;
 
 /***/ }),
-/* 4 */,
-/* 5 */
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _mediaDevice = __webpack_require__(0);
+
+var _mediaDevice2 = _interopRequireDefault(_mediaDevice);
+
+var _ButtonCameraPermission = __webpack_require__(3);
+
+var _ButtonCameraPermission2 = _interopRequireDefault(_ButtonCameraPermission);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -244,11 +208,46 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _Component = __webpack_require__(3);
+var _Component = __webpack_require__(1);
 
 var _Component2 = _interopRequireDefault(_Component);
 
-var _mediaDevice = __webpack_require__(1);
+var _CameraScreen = __webpack_require__(4);
+
+var _CameraScreen2 = _interopRequireDefault(_CameraScreen);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ButtonCameraPermission = new _Component2.default('ButtonCameraPermission', {
+  permitted: false
+});
+
+ButtonCameraPermission.on('click', function (evt) {
+  _CameraScreen2.default.setState({ show: true });
+});
+
+ButtonCameraPermission.render(function (state) {
+  console.log(state.permitted);
+});
+
+exports.default = ButtonCameraPermission;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _Component = __webpack_require__(1);
+
+var _Component2 = _interopRequireDefault(_Component);
+
+var _mediaDevice = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
