@@ -1,0 +1,18 @@
+
+
+
+.camera {
+  background-color: #000;
+  height: 100%;
+  position: relative;
+  width: 100%;
+}
+
+.camera__screen {
+  display: none;
+  height: 100%;
+  width: 100%;
+}
+.camera__screen--show {
+  display: block;
+}

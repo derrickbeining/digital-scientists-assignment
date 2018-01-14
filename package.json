@@ -1,0 +1,18 @@
+{
+  "name": "digital-scientists-assignment",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "dev": "webpack -w & live-server"
+  },
+  "author": "Derrick Beining (https://www.derrickbeining.com)",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "live-server": "^1.2.0",
+    "webpack": "^3.10.0"
+  }
+}
