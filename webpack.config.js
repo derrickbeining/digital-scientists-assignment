@@ -1,7 +1,10 @@
 const { resolve } = require('path');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: [
+    './node_modules/webrtc-adapter/out/adapter_no_global.js',
+    './src/index.js'
+  ],
   output: {
     path: resolve(__dirname),
     filename: 'main.js'
