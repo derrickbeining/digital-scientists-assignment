@@ -21,5 +21,4 @@ export function startingCamera (video) {
         video.play();
       };
     })
-    .catch(err => console.warn(`${err.name}: ${err.message}`));
 }

@@ -1,4 +1,5 @@
 import Component from '../Component';
+import Error from './Error';
 import {hasMediaDeviceAPI, startingCamera} from '../mediaDevice';
 
 const CameraScreen = new Component('CameraScreen', {
@@ -10,6 +11,7 @@ CameraScreen.render((state) => {
     if (hasMediaDeviceAPI()) {
       startingCamera(CameraScreen.dom)
         .then(() => CameraScreen.addClass('camera__screen--show'))
+        .catch(err => Error.setState({message: `${err.name}: \n${err.message}`}))
     }
 
   } else {

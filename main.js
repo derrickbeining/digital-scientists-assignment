@@ -73,42 +73,6 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.hasMediaDeviceAPI = hasMediaDeviceAPI;
-exports.startingCamera = startingCamera;
-function hasMediaDeviceAPI() {
-  return Boolean(navigator.mediaDevices) && Boolean(navigator.mediaDevices.getUserMedia);
-}
-
-function generateConstraints() {
-  var supportedConstraints = navigator.mediaDevices.getSupportedConstraints();
-  if (supportedConstraints.hasOwnProperty('facingMode')) {
-    return { video: { facingMode: 'environment' } };
-  } else {
-    return { video: true };
-  }
-}
-
-function startingCamera(video) {
-  return navigator.mediaDevices.getUserMedia(generateConstraints()).then(function (mediaStream) {
-    video.srcObject = mediaStream;
-    video.onloadedmetadata = function (e) {
-      video.play();
-    };
-  }).catch(function (err) {
-    return console.warn(err.name + ': ' + err.message);
-  });
-}
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -179,6 +143,40 @@ var Component = function () {
 }();
 
 exports.default = Component;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.hasMediaDeviceAPI = hasMediaDeviceAPI;
+exports.startingCamera = startingCamera;
+function hasMediaDeviceAPI() {
+  return Boolean(navigator.mediaDevices) && Boolean(navigator.mediaDevices.getUserMedia);
+}
+
+function generateConstraints() {
+  var supportedConstraints = navigator.mediaDevices.getSupportedConstraints();
+  if (supportedConstraints.hasOwnProperty('facingMode')) {
+    return { video: { facingMode: 'environment' } };
+  } else {
+    return { video: true };
+  }
+}
+
+function startingCamera(video) {
+  return navigator.mediaDevices.getUserMedia(generateConstraints()).then(function (mediaStream) {
+    video.srcObject = mediaStream;
+    video.onloadedmetadata = function (e) {
+      video.play();
+    };
+  });
+}
 
 /***/ }),
 /* 2 */
@@ -4540,7 +4538,7 @@ module.exports = g;
 "use strict";
 
 
-var _mediaDevice = __webpack_require__(0);
+var _mediaDevice = __webpack_require__(1);
 
 var _mediaDevice2 = _interopRequireDefault(_mediaDevice);
 
@@ -4561,7 +4559,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _Component = __webpack_require__(1);
+var _Component = __webpack_require__(0);
 
 var _Component2 = _interopRequireDefault(_Component);
 
@@ -4596,11 +4594,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _Component = __webpack_require__(1);
+var _Component = __webpack_require__(0);
 
 var _Component2 = _interopRequireDefault(_Component);
 
-var _mediaDevice = __webpack_require__(0);
+var _Error = __webpack_require__(8);
+
+var _Error2 = _interopRequireDefault(_Error);
+
+var _mediaDevice = __webpack_require__(1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4613,6 +4615,8 @@ CameraScreen.render(function (state) {
     if ((0, _mediaDevice.hasMediaDeviceAPI)()) {
       (0, _mediaDevice.startingCamera)(CameraScreen.dom).then(function () {
         return CameraScreen.addClass('camera__screen--show');
+      }).catch(function (err) {
+        return _Error2.default.setState({ message: err.name + ': \n' + err.message });
       });
     }
   } else {
@@ -4621,6 +4625,33 @@ CameraScreen.render(function (state) {
 });
 
 exports.default = CameraScreen;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _Component = __webpack_require__(0);
+
+var _Component2 = _interopRequireDefault(_Component);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Error = new _Component2.default('Error', {
+  message: ''
+});
+
+Error.render(function (state) {
+  Error.dom.textContent = state.message;
+});
+
+exports.default = Error;
 
 /***/ })
 /******/ ]);
