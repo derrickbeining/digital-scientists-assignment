@@ -154,11 +154,60 @@ exports.default = Component;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _Component = __webpack_require__(0);
+
+var _Component2 = _interopRequireDefault(_Component);
+
+var _Error = __webpack_require__(7);
+
+var _Error2 = _interopRequireDefault(_Error);
+
+var _mediaDevice = __webpack_require__(2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var CameraScreen = new _Component2.default('CameraScreen', {
+  show: false,
+  facingMode: 'environment'
+});
+
+CameraScreen.render(function (state) {
+  var show = state.show,
+      facingMode = state.facingMode;
+
+  console.log(facingMode);
+  if (show) {
+    if ((0, _mediaDevice.hasMediaDeviceAPI)()) {
+      (0, _mediaDevice.startingCamera)(CameraScreen.dom, facingMode).then(function () {
+        return CameraScreen.addClass('camera__screen--show');
+      }).catch(function (err) {
+        return _Error2.default.setState({ message: err.name + ': \n' + err.message });
+      });
+    }
+  } else {
+    (0, _mediaDevice.stopCamera)(CameraScreen.dom);
+    CameraScreen.removeClass('camera__screen--show');
+  }
+});
+
+exports.default = CameraScreen;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.hasMediaDeviceAPI = hasMediaDeviceAPI;
 exports.startingCamera = startingCamera;
 exports.stopCamera = stopCamera;
 
-var _CameraScreen = __webpack_require__(2);
+var _CameraScreen = __webpack_require__(1);
 
 var _CameraScreen2 = _interopRequireDefault(_CameraScreen);
 
@@ -204,55 +253,6 @@ function stopCamera(video) {
 }
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _Component = __webpack_require__(0);
-
-var _Component2 = _interopRequireDefault(_Component);
-
-var _Error = __webpack_require__(8);
-
-var _Error2 = _interopRequireDefault(_Error);
-
-var _mediaDevice = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var CameraScreen = new _Component2.default('CameraScreen', {
-  show: false,
-  facingMode: 'environment'
-});
-
-CameraScreen.render(function (state) {
-  var show = state.show,
-      facingMode = state.facingMode;
-
-  console.log(facingMode);
-  if (show) {
-    if ((0, _mediaDevice.hasMediaDeviceAPI)()) {
-      (0, _mediaDevice.startingCamera)(CameraScreen.dom, facingMode).then(function () {
-        return CameraScreen.addClass('camera__screen--show');
-      }).catch(function (err) {
-        return _Error2.default.setState({ message: err.name + ': \n' + err.message });
-      });
-    }
-  } else {
-    (0, _mediaDevice.stopCamera)(CameraScreen.dom);
-    CameraScreen.removeClass('camera__screen--show');
-  }
-});
-
-exports.default = CameraScreen;
-
-/***/ }),
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -268,15 +268,15 @@ module.exports = __webpack_require__(4);
 
 __webpack_require__(5);
 
-var _mediaDevice = __webpack_require__(1);
+var _mediaDevice = __webpack_require__(2);
 
 var _mediaDevice2 = _interopRequireDefault(_mediaDevice);
 
-var _ButtonCameraPower = __webpack_require__(10);
+var _ButtonCameraPower = __webpack_require__(8);
 
 var _ButtonCameraPower2 = _interopRequireDefault(_ButtonCameraPower);
 
-var _ButtonCameraFacing = __webpack_require__(11);
+var _ButtonCameraFacing = __webpack_require__(9);
 
 var _ButtonCameraFacing2 = _interopRequireDefault(_ButtonCameraFacing);
 
@@ -4649,8 +4649,7 @@ try {
 module.exports = g;
 
 /***/ }),
-/* 7 */,
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4677,8 +4676,7 @@ Error.render(function (state) {
 exports.default = Error;
 
 /***/ }),
-/* 9 */,
-/* 10 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4692,7 +4690,7 @@ var _Component = __webpack_require__(0);
 
 var _Component2 = _interopRequireDefault(_Component);
 
-var _CameraScreen = __webpack_require__(2);
+var _CameraScreen = __webpack_require__(1);
 
 var _CameraScreen2 = _interopRequireDefault(_CameraScreen);
 
@@ -4713,7 +4711,7 @@ ButtonCameraPower.on('click', function (evt) {
 exports.default = ButtonCameraPower;
 
 /***/ }),
-/* 11 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4727,7 +4725,7 @@ var _Component = __webpack_require__(0);
 
 var _Component2 = _interopRequireDefault(_Component);
 
-var _CameraScreen = __webpack_require__(2);
+var _CameraScreen = __webpack_require__(1);
 
 var _CameraScreen2 = _interopRequireDefault(_CameraScreen);
 
