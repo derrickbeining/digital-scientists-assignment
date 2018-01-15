@@ -24,7 +24,7 @@ body *:after {
 
 .camera {
   background-color: #000;
-  flex: 0 1 100%;
+  flex: 10 1 50%;
   /* height: 100%; */
   position: relative;
   /* width: 100%; */
@@ -42,6 +42,7 @@ body *:after {
 .camera__screen {
   visibility: hidden;
   height: 100%;
+
   width: 100%;
 }
 .camera__screen--show {
@@ -55,7 +56,7 @@ body *:after {
   display: flex;
   justify-content: space-evenly;
   left: 0;
-  height: 5rem;
+  height: 7rem;
   overflow-y: visible;
   /* position: fixed; */
   width: 100%;
