@@ -49,6 +49,7 @@ body *:after {
 }
 
 .control-bar {
+  align-content: center;
   background-color: #000;
   border-top: 1px solid #333;
   bottom: 0;
@@ -61,32 +62,31 @@ body *:after {
   width: 100%;
 }
 
-.control-bar__btn-container--left {
+.control-bar__btn-container {
   display: flex;
-  justify-content: flex-start;
+  height: 100%;
   width: 100%;
+}
+
+.control-bar__btn-container--left {
+  justify-content: flex-start;
 }
 
 .control-bar__btn-container--middle {
-  display: flex;
   justify-content: center;
-  width: 100%;
 }
 .control-bar__btn-container--right {
-  display: flex;
   justify-content: flex-end;
+}
+
+.control-bar__btn {
+  /* height: 100%; */
   width: 100%;
 }
 
-.control-bar__btn--on {
-
-}
-
-.control-bar__btn--off {
-
-}
 
 .control-bar__btn--capture {
+  align-self: center;
   align-content: center;
   background-color: transparent;
   border: .5rem solid #fff;
