@@ -157,6 +157,13 @@ Object.defineProperty(exports, "__esModule", {
 exports.hasMediaDeviceAPI = hasMediaDeviceAPI;
 exports.startingCamera = startingCamera;
 exports.stopCamera = stopCamera;
+
+var _CameraScreen = __webpack_require__(2);
+
+var _CameraScreen2 = _interopRequireDefault(_CameraScreen);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function hasMediaDeviceAPI() {
   return Boolean(navigator.mediaDevices) && Boolean(navigator.mediaDevices.getUserMedia);
 }
@@ -169,11 +176,18 @@ function generateConstraints() {
   var facingMode = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'environment';
 
   var supportedConstraints = navigator.mediaDevices.getSupportedConstraints();
+  var constraints = {
+    width: _CameraScreen2.default.dom.offsetWidth,
+    aspectRatio: 1
+  };
+
   if (isMobileDevice() && supportedConstraints.hasOwnProperty('facingMode')) {
-    return { video: { facingMode: facingMode } };
+    constraints.video = { facingMode: facingMode };
   } else {
-    return { video: true };
+    constraints.video = true;
   }
+
+  return constraints;
 }
 
 function startingCamera(video) {
@@ -4725,10 +4739,10 @@ ButtonCameraFacing.on('click', function (evt) {
   console.log('clicked');
   if (_CameraScreen2.default.getState().facingMode === 'user') {
     _CameraScreen2.default.setState({ facingMode: 'environment' });
-    ButtonCameraFacing.dom.textContent = 'Front';
+    ButtonCameraFacing.dom.textContent = 'Switch to Front';
   } else {
     _CameraScreen2.default.setState({ facingMode: 'user' });
-    ButtonCameraFacing.dom.textContent = 'Rear';
+    ButtonCameraFacing.dom.textContent = 'Switch to Rear';
   }
 });
 

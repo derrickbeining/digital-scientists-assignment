@@ -1,3 +1,5 @@
+import CameraScreen from './components/CameraScreen';
+
 export function hasMediaDeviceAPI () {
   return Boolean(navigator.mediaDevices)
     && Boolean(navigator.mediaDevices.getUserMedia);
@@ -9,11 +11,18 @@ function isMobileDevice () {
 
 function generateConstraints(facingMode = 'environment') {
   const supportedConstraints = navigator.mediaDevices.getSupportedConstraints();
-  if (isMobileDevice() && supportedConstraints.hasOwnProperty('facingMode')) {
-    return {video: { facingMode: facingMode }};
-  } else {
-    return { video: true };
+  const constraints = {
+    width: CameraScreen.dom.offsetWidth,
+    aspectRatio: 1
   }
+
+  if (isMobileDevice() && supportedConstraints.hasOwnProperty('facingMode')) {
+    constraints.video = { facingMode: facingMode };
+  } else {
+    constraints.video = true;
+  }
+
+  return constraints;
 }
 
 export function startingCamera (video, facingMode = 'environment') {
