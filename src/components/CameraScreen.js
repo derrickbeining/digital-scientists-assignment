@@ -1,20 +1,24 @@
 import Component from '../Component';
 import Error from './Error';
-import {hasMediaDeviceAPI, startingCamera} from '../mediaDevice';
+import {hasMediaDeviceAPI, startingCamera, stopCamera} from '../mediaDevice';
 
 const CameraScreen = new Component('CameraScreen', {
-  show: false
+  show: false,
+  facingMode: 'environment'
 })
 
 CameraScreen.render((state) => {
-  if (CameraScreen.getState().show) {
+  const {show, facingMode} = state;
+  console.log(facingMode);
+  if (show) {
     if (hasMediaDeviceAPI()) {
-      startingCamera(CameraScreen.dom)
+      startingCamera(CameraScreen.dom, facingMode)
         .then(() => CameraScreen.addClass('camera__screen--show'))
         .catch(err => Error.setState({message: `${err.name}: \n${err.message}`}))
     }
 
   } else {
+    stopCamera(CameraScreen.dom);
     CameraScreen.removeClass('camera__screen--show');
   }
 })

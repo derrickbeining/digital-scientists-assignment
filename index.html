@@ -11,21 +11,35 @@
   <body>
     <h1>Image Recognition App</h1>
 
-    <p id="Error"></p>
 
-    <button id="ButtonCameraPermission" class="btn btn-camera-permission">
-      Open Camera
-    </button>
+
 
 
     <div id="Camera" class="camera">
       <!-- webrtc/samples issue#929:
-           apprently `playsinline` is required for Safari iOS -->
-      <video id="CameraScreen" class="camera__screen" autoplay playsinline></video>
+        apprently `playsinline` is required for Safari iOS -->
+      <video id="CameraScreen" class="camera__screen" playsinline></video>
+      <p id="Error" class="camera__error"></p>
     </div>
 
     <div class="control-bar">
+      <div class="control-bar__btn-container--left">
+        <button id="ButtonCameraPower" class="btn control-bar__btn control-bar__btn--on">
+          On
+        </button>
 
+      </div>
+
+      <div class="control-bar__btn-container--middle">
+        <button id="ButtonCameraCapture" class="btn control-bar__btn control-bar__btn--capture">
+        </button>
+      </div>
+
+      <div class="control-bar__btn-container--right">
+        <button id="ButtonCameraFacing" class="btn control-bar__btn control-bar__btn--facing-mode">
+          Rear
+        </button>
+      </div>
     </div>
 
     <script type="text/javascript" src="main.js"></script>

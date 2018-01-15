@@ -2,7 +2,7 @@ const { resolve } = require('path');
 
 module.exports = {
   entry: [
-    './node_modules/webrtc-adapter/out/adapter_no_global.js',
+    // './node_modules/webrtc-adapter/out/adapter.js',
     './src/index.js'
   ],
   output: {
