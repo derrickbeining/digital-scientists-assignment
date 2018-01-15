@@ -13,6 +13,7 @@ function generateConstraints(facingMode = 'environment') {
   const supportedConstraints = navigator.mediaDevices.getSupportedConstraints();
   const constraints = {
     width: CameraScreen.dom.offsetWidth,
+    height: CameraScreen.dom.offsetWidth,
     aspectRatio: 1
   }
 

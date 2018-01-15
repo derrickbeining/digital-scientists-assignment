@@ -227,6 +227,7 @@ function generateConstraints() {
   var supportedConstraints = navigator.mediaDevices.getSupportedConstraints();
   var constraints = {
     width: _CameraScreen2.default.dom.offsetWidth,
+    height: _CameraScreen2.default.dom.offsetWidth,
     aspectRatio: 1
   };
 
