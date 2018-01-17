@@ -1,6 +1,7 @@
 import Component from '../Component';
 import Canvas from './Canvas';
 import CameraScreen from './CameraScreen';
+import ButtonReadResult from './ButtonReadResult';
 
 const ButtonCameraCapture = new Component('ButtonCameraCapture');
 
@@ -19,16 +20,11 @@ function sendImageForAnalysis(imageData) {
   .catch(err => console.log('Error: ', err));
 }
 
-function speakResult(result) {
-  const utterance = new SpeechSynthesisUtterance(result)
-  window.speechSynthesis.speak(utterance)
-}
-
 const fileReader = new FileReader();
 
 fileReader.addEventListener('loadend', function() {
   sendImageForAnalysis(fileReader.result)
-  .then(result => speakResult(result));
+  .then(result => ButtonReadResult.setState({result}));
 })
 
 ButtonCameraCapture.on('click', function takePicture() {

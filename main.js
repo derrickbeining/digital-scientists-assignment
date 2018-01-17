@@ -161,11 +161,11 @@ var _Component = __webpack_require__(0);
 
 var _Component2 = _interopRequireDefault(_Component);
 
-var _Error = __webpack_require__(7);
+var _Error = __webpack_require__(8);
 
 var _Error2 = _interopRequireDefault(_Error);
 
-var _mediaDevice = __webpack_require__(2);
+var _mediaDevice = __webpack_require__(9);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -205,9 +205,10 @@ exports.default = CameraScreen;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.hasMediaDeviceAPI = hasMediaDeviceAPI;
-exports.startingCamera = startingCamera;
-exports.stopCamera = stopCamera;
+
+var _Component = __webpack_require__(0);
+
+var _Component2 = _interopRequireDefault(_Component);
 
 var _CameraScreen = __webpack_require__(1);
 
@@ -215,45 +216,29 @@ var _CameraScreen2 = _interopRequireDefault(_CameraScreen);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function hasMediaDeviceAPI() {
-  return Boolean(navigator.mediaDevices) && Boolean(navigator.mediaDevices.getUserMedia);
-}
+var Canvas = new _Component2.default('Canvas');
 
-function isMobileDevice() {
-  return navigator.userAgent.search(/mobi/i) !== -1;
-}
+Canvas.clearPhoto = function clearPhoto() {
+  // application/octet-stream
+  var ctx = this.dom.getContext('2d');
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, this.dom.width, this.dom.height);
+};
 
-function generateConstraints() {
-  var facingMode = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'environment';
+Canvas.takePicture = function takePicture(cameraScreen) {
+  var ctx = this.dom.getContext('2d');
+  this.dom.height = cameraScreen.offsetHeight;
+  this.dom.width = cameraScreen.offsetWidth;
+  ctx.drawImage(cameraScreen, 0, 0, this.dom.width, this.dom.height);
 
-  var supportedConstraints = navigator.mediaDevices.getSupportedConstraints();
-  var constraints = {
-    width: _CameraScreen2.default.dom.offsetWidth,
-    height: _CameraScreen2.default.dom.offsetWidth,
-    aspectRatio: 1
-  };
-
-  if (isMobileDevice() && supportedConstraints.hasOwnProperty('facingMode')) {
-    constraints.video = { facingMode: facingMode };
-  } else {
-    constraints.video = true;
-  }
-
-  return constraints;
-}
-
-function startingCamera(video) {
-  var facingMode = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'environment';
-
-  return navigator.mediaDevices.getUserMedia(generateConstraints(facingMode)).then(function (mediaStream) {
-    video.srcObject = mediaStream;
-    video.play();
+  return new Promise(function (fulfillWith) {
+    Canvas.dom.toBlob(function (blob) {
+      fulfillWith(blob);
+    });
   });
-}
+};
 
-function stopCamera(video) {
-  video.srcObject = null;
-}
+exports.default = Canvas;
 
 /***/ }),
 /* 3 */
@@ -271,11 +256,11 @@ module.exports = __webpack_require__(4);
 
 __webpack_require__(5);
 
-var _ButtonCameraPower = __webpack_require__(8);
+var _ButtonCameraPower = __webpack_require__(7);
 
 var _ButtonCameraPower2 = _interopRequireDefault(_ButtonCameraPower);
 
-var _ButtonCameraFacing = __webpack_require__(9);
+var _ButtonCameraFacing = __webpack_require__(10);
 
 var _ButtonCameraFacing2 = _interopRequireDefault(_ButtonCameraFacing);
 
@@ -283,7 +268,11 @@ var _ButtonCameraCapture = __webpack_require__(11);
 
 var _ButtonCameraCapture2 = _interopRequireDefault(_ButtonCameraCapture);
 
-var _Canvas = __webpack_require__(10);
+var _ButtonReadResult = __webpack_require__(12);
+
+var _ButtonReadResult2 = _interopRequireDefault(_ButtonReadResult);
+
+var _Canvas = __webpack_require__(2);
 
 var _Canvas2 = _interopRequireDefault(_Canvas);
 
@@ -4670,33 +4659,6 @@ var _Component = __webpack_require__(0);
 
 var _Component2 = _interopRequireDefault(_Component);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Error = new _Component2.default('Error', {
-  message: ''
-});
-
-Error.render(function (state) {
-  Error.dom.textContent = state.message;
-});
-
-exports.default = Error;
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _Component = __webpack_require__(0);
-
-var _Component2 = _interopRequireDefault(_Component);
-
 var _CameraScreen = __webpack_require__(1);
 
 var _CameraScreen2 = _interopRequireDefault(_CameraScreen);
@@ -4718,7 +4680,94 @@ ButtonCameraPower.on('click', function (evt) {
 exports.default = ButtonCameraPower;
 
 /***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _Component = __webpack_require__(0);
+
+var _Component2 = _interopRequireDefault(_Component);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Error = new _Component2.default('Error', {
+  message: ''
+});
+
+Error.render(function (state) {
+  Error.dom.textContent = state.message;
+});
+
+exports.default = Error;
+
+/***/ }),
 /* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.hasMediaDeviceAPI = hasMediaDeviceAPI;
+exports.startingCamera = startingCamera;
+exports.stopCamera = stopCamera;
+
+var _CameraScreen = __webpack_require__(1);
+
+var _CameraScreen2 = _interopRequireDefault(_CameraScreen);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function hasMediaDeviceAPI() {
+  return Boolean(navigator.mediaDevices) && Boolean(navigator.mediaDevices.getUserMedia);
+}
+
+function isMobileDevice() {
+  return navigator.userAgent.search(/mobi/i) !== -1;
+}
+
+function generateConstraints() {
+  var facingMode = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'environment';
+
+  var supportedConstraints = navigator.mediaDevices.getSupportedConstraints();
+  var constraints = {
+    width: _CameraScreen2.default.dom.offsetWidth,
+    height: _CameraScreen2.default.dom.offsetWidth,
+    aspectRatio: 1
+  };
+
+  if (isMobileDevice() && supportedConstraints.hasOwnProperty('facingMode')) {
+    constraints.video = { facingMode: facingMode };
+  } else {
+    constraints.video = true;
+  }
+
+  return constraints;
+}
+
+function startingCamera(video) {
+  var facingMode = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'environment';
+
+  return navigator.mediaDevices.getUserMedia(generateConstraints(facingMode)).then(function (mediaStream) {
+    video.srcObject = mediaStream;
+    video.play();
+  });
+}
+
+function stopCamera(video) {
+  video.srcObject = null;
+}
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4754,51 +4803,6 @@ ButtonCameraFacing.on('click', function (evt) {
 exports.default = ButtonCameraFacing;
 
 /***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _Component = __webpack_require__(0);
-
-var _Component2 = _interopRequireDefault(_Component);
-
-var _CameraScreen = __webpack_require__(1);
-
-var _CameraScreen2 = _interopRequireDefault(_CameraScreen);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Canvas = new _Component2.default('Canvas');
-
-Canvas.clearPhoto = function clearPhoto() {
-  // application/octet-stream
-  var ctx = this.dom.getContext('2d');
-  ctx.fillStyle = '#fff';
-  ctx.fillRect(0, 0, this.dom.width, this.dom.height);
-};
-
-Canvas.takePicture = function takePicture(cameraScreen) {
-  var ctx = this.dom.getContext('2d');
-  this.dom.height = cameraScreen.offsetHeight;
-  this.dom.width = cameraScreen.offsetWidth;
-  ctx.drawImage(cameraScreen, 0, 0, this.dom.width, this.dom.height);
-
-  return new Promise(function (fulfillWith) {
-    Canvas.dom.toBlob(function (blob) {
-      fulfillWith(blob);
-    });
-  });
-};
-
-exports.default = Canvas;
-
-/***/ }),
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4809,13 +4813,17 @@ var _Component = __webpack_require__(0);
 
 var _Component2 = _interopRequireDefault(_Component);
 
-var _Canvas = __webpack_require__(10);
+var _Canvas = __webpack_require__(2);
 
 var _Canvas2 = _interopRequireDefault(_Canvas);
 
 var _CameraScreen = __webpack_require__(1);
 
 var _CameraScreen2 = _interopRequireDefault(_CameraScreen);
+
+var _ButtonReadResult = __webpack_require__(12);
+
+var _ButtonReadResult2 = _interopRequireDefault(_ButtonReadResult);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4839,16 +4847,11 @@ function sendImageForAnalysis(imageData) {
   });
 }
 
-function speakResult(result) {
-  var utterance = new SpeechSynthesisUtterance(result);
-  window.speechSynthesis.speak(utterance);
-}
-
 var fileReader = new FileReader();
 
 fileReader.addEventListener('loadend', function () {
   sendImageForAnalysis(fileReader.result).then(function (result) {
-    return speakResult(result);
+    return _ButtonReadResult2.default.setState({ result: result });
   });
 });
 
@@ -4857,6 +4860,42 @@ ButtonCameraCapture.on('click', function takePicture() {
     fileReader.readAsDataURL(imageBlob);
   });
 });
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _Component = __webpack_require__(0);
+
+var _Component2 = _interopRequireDefault(_Component);
+
+var _CameraScreen = __webpack_require__(1);
+
+var _CameraScreen2 = _interopRequireDefault(_CameraScreen);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ButtonReadResult = new _Component2.default('ButtonReadResult', {
+  result: 'You must take a picture first.'
+});
+
+function speakResult(result) {
+  var utterance = new SpeechSynthesisUtterance(result);
+  window.speechSynthesis.speak(utterance);
+}
+
+ButtonReadResult.on('click', function (evt) {
+  speakResult(ButtonReadResult.getState().result);
+});
+
+exports.default = ButtonReadResult;
 
 /***/ })
 /******/ ]);
