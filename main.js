@@ -129,7 +129,9 @@ var Component = function () {
   }, {
     key: 'on',
     value: function on(event, eventHandler) {
-      return this.dom.addEventListener(event, eventHandler);
+      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+      return this.dom.addEventListener(event, eventHandler, options);
     }
   }, {
     key: 'render',
@@ -176,18 +178,18 @@ CameraScreen.render(function (state) {
   var show = state.show,
       facingMode = state.facingMode;
 
-  console.log(facingMode);
-  if (show) {
-    if ((0, _mediaDevice.hasMediaDeviceAPI)()) {
+  if ((0, _mediaDevice.hasMediaDeviceAPI)()) {
+
+    if (show) {
       (0, _mediaDevice.startingCamera)(CameraScreen.dom, facingMode).then(function () {
         return CameraScreen.addClass('camera__screen--show');
       }).catch(function (err) {
         return _Error2.default.setState({ message: err.name + ': \n' + err.message });
       });
+    } else {
+      (0, _mediaDevice.stopCamera)(CameraScreen.dom);
+      CameraScreen.removeClass('camera__screen--show');
     }
-  } else {
-    (0, _mediaDevice.stopCamera)(CameraScreen.dom);
-    CameraScreen.removeClass('camera__screen--show');
   }
 });
 
@@ -269,10 +271,6 @@ module.exports = __webpack_require__(4);
 
 __webpack_require__(5);
 
-var _mediaDevice = __webpack_require__(2);
-
-var _mediaDevice2 = _interopRequireDefault(_mediaDevice);
-
 var _ButtonCameraPower = __webpack_require__(8);
 
 var _ButtonCameraPower2 = _interopRequireDefault(_ButtonCameraPower);
@@ -280,6 +278,14 @@ var _ButtonCameraPower2 = _interopRequireDefault(_ButtonCameraPower);
 var _ButtonCameraFacing = __webpack_require__(9);
 
 var _ButtonCameraFacing2 = _interopRequireDefault(_ButtonCameraFacing);
+
+var _ButtonCameraCapture = __webpack_require__(11);
+
+var _ButtonCameraCapture2 = _interopRequireDefault(_ButtonCameraCapture);
+
+var _Canvas = __webpack_require__(10);
+
+var _Canvas2 = _interopRequireDefault(_Canvas);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4746,6 +4752,111 @@ ButtonCameraFacing.on('click', function (evt) {
 });
 
 exports.default = ButtonCameraFacing;
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _Component = __webpack_require__(0);
+
+var _Component2 = _interopRequireDefault(_Component);
+
+var _CameraScreen = __webpack_require__(1);
+
+var _CameraScreen2 = _interopRequireDefault(_CameraScreen);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Canvas = new _Component2.default('Canvas');
+
+Canvas.clearPhoto = function clearPhoto() {
+  // application/octet-stream
+  var ctx = this.dom.getContext('2d');
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, this.dom.width, this.dom.height);
+};
+
+Canvas.takePicture = function takePicture(cameraScreen) {
+  var ctx = this.dom.getContext('2d');
+  this.dom.height = cameraScreen.offsetHeight;
+  this.dom.width = cameraScreen.offsetWidth;
+  ctx.drawImage(cameraScreen, 0, 0, this.dom.width, this.dom.height);
+
+  return new Promise(function (fulfillWith) {
+    Canvas.dom.toBlob(function (blob) {
+      fulfillWith(blob);
+    });
+  });
+};
+
+exports.default = Canvas;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Component = __webpack_require__(0);
+
+var _Component2 = _interopRequireDefault(_Component);
+
+var _Canvas = __webpack_require__(10);
+
+var _Canvas2 = _interopRequireDefault(_Canvas);
+
+var _CameraScreen = __webpack_require__(1);
+
+var _CameraScreen2 = _interopRequireDefault(_CameraScreen);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ButtonCameraCapture = new _Component2.default('ButtonCameraCapture');
+
+function sendImageForAnalysis(imageData) {
+  var headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  return fetch('https://young-mountain-88984.herokuapp.com/image-vision', {
+    method: 'POST',
+    headers: headers,
+    mode: 'cors',
+    cache: 'default',
+    body: JSON.stringify({ image: imageData })
+  }).then(function (res) {
+    return res.json();
+  }).then(function (data) {
+    return data.labelAnnotations[0].description;
+  }).catch(function (err) {
+    return console.log('Error: ', err);
+  });
+}
+
+function speakResult(result) {
+  var utterance = new SpeechSynthesisUtterance(result);
+  window.speechSynthesis.speak(utterance);
+}
+
+var fileReader = new FileReader();
+
+fileReader.addEventListener('loadend', function () {
+  sendImageForAnalysis(fileReader.result).then(function (result) {
+    return speakResult(result);
+  });
+});
+
+ButtonCameraCapture.on('click', function takePicture() {
+  _Canvas2.default.takePicture(_CameraScreen2.default.dom).then(function (imageBlob) {
+    fileReader.readAsDataURL(imageBlob);
+  });
+});
 
 /***/ })
 /******/ ]);

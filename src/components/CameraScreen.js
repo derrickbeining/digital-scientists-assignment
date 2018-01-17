@@ -9,17 +9,18 @@ const CameraScreen = new Component('CameraScreen', {
 
 CameraScreen.render((state) => {
   const {show, facingMode} = state;
-  console.log(facingMode);
-  if (show) {
-    if (hasMediaDeviceAPI()) {
+  if (hasMediaDeviceAPI()) {
+
+    if (show) {
       startingCamera(CameraScreen.dom, facingMode)
         .then(() => CameraScreen.addClass('camera__screen--show'))
         .catch(err => Error.setState({message: `${err.name}: \n${err.message}`}))
     }
 
-  } else {
-    stopCamera(CameraScreen.dom);
-    CameraScreen.removeClass('camera__screen--show');
+    else {
+      stopCamera(CameraScreen.dom);
+      CameraScreen.removeClass('camera__screen--show');
+    }
   }
 })
 

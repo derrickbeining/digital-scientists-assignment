@@ -38,8 +38,8 @@ export default class Component {
     this.dom.classList.toggle(classname);
   }
 
-  on(event, eventHandler) {
-    return this.dom.addEventListener(event, eventHandler);
+  on(event, eventHandler, options = false) {
+    return this.dom.addEventListener(event, eventHandler, options);
   }
 
   render(fn) {
