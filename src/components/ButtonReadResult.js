@@ -2,7 +2,7 @@ import Component from '../Component';
 import CameraScreen from './CameraScreen';
 
 const ButtonReadResult = new Component('ButtonReadResult', {
-  result: 'You must take a picture first.'
+  result: ''
 });
 
 function speakResult(result) {
@@ -12,6 +12,15 @@ function speakResult(result) {
 
 ButtonReadResult.on('click', function(evt) {
   speakResult(ButtonReadResult.getState().result);
+  ButtonReadResult.setState({result: ''});
+})
+
+ButtonReadResult.render(state => {
+  if (ButtonReadResult.getState().result) {
+    ButtonReadResult.removeClass('util-invisible');
+  } else {
+    ButtonReadResult.addClass('util-invisible');
+  }
 })
 
 export default ButtonReadResult;

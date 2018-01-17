@@ -13,13 +13,13 @@ CameraScreen.render((state) => {
 
     if (show) {
       startingCamera(CameraScreen.dom, facingMode)
-        .then(() => CameraScreen.addClass('camera__screen--show'))
+        .then(() => CameraScreen.addClass('util-visible'))
         .catch(err => Error.setState({message: `${err.name}: \n${err.message}`}))
     }
 
     else {
       stopCamera(CameraScreen.dom);
-      CameraScreen.removeClass('camera__screen--show');
+      CameraScreen.removeClass('util-visible');
     }
   }
 })

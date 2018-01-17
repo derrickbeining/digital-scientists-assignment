@@ -182,13 +182,13 @@ CameraScreen.render(function (state) {
 
     if (show) {
       (0, _mediaDevice.startingCamera)(CameraScreen.dom, facingMode).then(function () {
-        return CameraScreen.addClass('camera__screen--show');
+        return CameraScreen.addClass('util-visible');
       }).catch(function (err) {
         return _Error2.default.setState({ message: err.name + ': \n' + err.message });
       });
     } else {
       (0, _mediaDevice.stopCamera)(CameraScreen.dom);
-      CameraScreen.removeClass('camera__screen--show');
+      CameraScreen.removeClass('util-visible');
     }
   }
 });
@@ -262,7 +262,7 @@ var _CameraScreen2 = _interopRequireDefault(_CameraScreen);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var ButtonReadResult = new _Component2.default('ButtonReadResult', {
-  result: 'You must take a picture first.'
+  result: ''
 });
 
 function speakResult(result) {
@@ -272,6 +272,15 @@ function speakResult(result) {
 
 ButtonReadResult.on('click', function (evt) {
   speakResult(ButtonReadResult.getState().result);
+  ButtonReadResult.setState({ result: '' });
+});
+
+ButtonReadResult.render(function (state) {
+  if (ButtonReadResult.getState().result) {
+    ButtonReadResult.removeClass('util-invisible');
+  } else {
+    ButtonReadResult.addClass('util-invisible');
+  }
 });
 
 exports.default = ButtonReadResult;
@@ -458,13 +467,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var ButtonCameraFacing = new _Component2.default('ButtonCameraFacing');
 
 ButtonCameraFacing.on('click', function (evt) {
-  console.log('clicked');
   if (_CameraScreen2.default.getState().facingMode === 'user') {
     _CameraScreen2.default.setState({ facingMode: 'environment' });
-    ButtonCameraFacing.dom.textContent = 'Switch to Front';
+    ButtonCameraFacing.dom.textContent = 'Use Front';
   } else {
     _CameraScreen2.default.setState({ facingMode: 'user' });
-    ButtonCameraFacing.dom.textContent = 'Switch to Rear';
+    ButtonCameraFacing.dom.textContent = 'Use Rear';
   }
 });
 
