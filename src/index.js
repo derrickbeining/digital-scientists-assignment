@@ -1,4 +1,4 @@
-import 'webrtc-adapter/out/adapter';
+// import 'webrtc-adapter/out/adapter';
 
 import ButtonCameraPower from './components/ButtonCameraPower';
 import ButtonCameraFacing from './components/ButtonCameraFacing';
